@@ -1,14 +1,16 @@
 import express, { Application, json } from "express"
 import "dotenv/config"
 import { connectDB } from "./database"
-import { createMovie, deleteMovie, readMovie, updateMovie } from "./logic"
-import { verifyIdExists } from "./middleware"
+import { createMovie, deleteMovie, readMovie, readMovieById, updateMovie } from "./logic"
+import { verifyIdExists, verifyNameExists } from "./middleware"
 
 const app: Application = express()
 app.use(json())
 
-app.post("/movies", createMovie)
+app.post("/movies", verifyNameExists, createMovie)
 app.get("/movies", readMovie)
+
+app.get("/movies/:id", verifyIdExists, readMovieById)
 
 app.patch("/movies/:id", verifyIdExists, updateMovie)
 app.delete("/movies/:id", verifyIdExists, deleteMovie)

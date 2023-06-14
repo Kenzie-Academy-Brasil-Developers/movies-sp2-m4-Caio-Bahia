@@ -39,6 +39,10 @@ const readMovie = async (request: Request, response: Response): Promise<Response
 
   return response.json(queryResultAll.rows)
 }
+const readMovieById = async (request: Request, response: Response): Promise<Response> => {
+  return response.status(200).json(response.locals.getMovie)
+}
+
 const updateMovie = async (request: Request, response: Response): Promise<Response> => {
   const payload: TMovieUpdateRequest = request.body
 
@@ -56,7 +60,6 @@ const updateMovie = async (request: Request, response: Response): Promise<Respon
 
   return response.status(200).json(queryResult.rows[0])
 }
-
 const deleteMovie = async (request: Request, response: Response): Promise<Response> => {
   const queryString: string = `
     DELETE FROM movies
@@ -65,5 +68,4 @@ const deleteMovie = async (request: Request, response: Response): Promise<Respon
   await client.query(queryString, [request.params.id])
   return response.status(204).send()
 }
-
-export { createMovie, readMovie, updateMovie, deleteMovie }
+export { createMovie, readMovie, updateMovie, deleteMovie, readMovieById }
